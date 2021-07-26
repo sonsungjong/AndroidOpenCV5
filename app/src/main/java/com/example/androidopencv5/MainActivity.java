@@ -16,6 +16,7 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 
 import java.util.Collections;
@@ -70,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         mOpenCvCameraView = (CameraBridgeViewBase)findViewById(R.id.activity_surface_view);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
-        mOpenCvCameraView.setCameraIndex(0); // front-camera(1),  back-camera(0)
+
+        mOpenCvCameraView.setCameraIndex(1); // front-camera(1),  back-camera(0)
     }
 
     @Override
@@ -119,11 +121,11 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         matInput = inputFrame.rgba();
 
         if ( matResult == null )
-
             matResult = new Mat(matInput.rows(), matInput.cols(), matInput.type());
 
         ConvertRGBtoGray(matInput.getNativeObjAddr(), matResult.getNativeObjAddr());
 
+        Core.flip(matResult, matResult, -1);
         return matResult;
     }
 
